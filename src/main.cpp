@@ -1,49 +1,28 @@
-﻿#include <cstdlib>
-
+﻿#pragma once
+#include <cstdlib>
 #include "raylib.h"
-
+#include "iostream"
 #include "config.h"
+#include "Character.h"
+#include "NonPlayableCharacter.h"
+#include "Orc.h"
+#include "Warrior.h"
 
 int main() {
-    // Raylib initialization
-    // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
-    InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
-    SetTargetFPS(60);
+    Warrior Frodo(9);
+    Orc Groschnak(8);
+    Warrior Olaf(10);
 
-#ifdef GAME_START_FULLSCREEN
-    ToggleFullscreen();
-#endif
 
-    // Your own initialization code here
-    // ...
-    // ...
-    Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
+    Frodo.setAttributes();
+    Frodo.setStats();
+    Groschnak.setStats();
 
-    // Main game loop
-    while (!WindowShouldClose()) // Detect window close button or ESC key
-    {
-        // Updates that are made by frame are coded here
-        // ...
-        // ...
 
-        BeginDrawing();
-            // You can draw on the screen between BeginDrawing() and EndDrawing()
-            // ...
-            // ...
-            ClearBackground(WHITE);
-            DrawText("Hello, world!", 10, 10, 30, LIGHTGRAY);
-            DrawTexture(myTexture, 10, 100, WHITE);
-
-        EndDrawing();
-    } // Main game loop end
-
-    // De-initialization here
-    // ...
-    // ...
-    UnloadTexture(myTexture);
-
-    // Close window and OpenGL context
-    CloseWindow();
+    while(Frodo.isAlive() && Groschnak.isAlive()) {
+      Groschnak.setHealth(Groschnak.getHealth() - (Frodo.attack() + Olaf.attack()));
+      Frodo.setHealth(Frodo.getHealth() - Groschnak.attack());
+    }
 
     return EXIT_SUCCESS;
 }
